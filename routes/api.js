@@ -45,7 +45,7 @@ router.get("/api/scrape", function(req, res) {
             if (numDocs > 0) {
                 Post.find({}).then((documents) => {
                     console.log(documents.length, "documents")
-                    if (documents.length !== docs.length) {
+                    if (documents.length !== numDocs) {
                         let numNew = documents.length - numDocs;
                         let textMessage = "";
                         for (let i = 0; i < 3; i++) {
