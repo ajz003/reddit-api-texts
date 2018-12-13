@@ -12,8 +12,6 @@ router.get("/api/scrape", function (req, res) {
                 let newPost = {}
                 newPost.title = response.data.data.children[i].data.title;
                 newPost.link = response.data.data.children[i].data.url;
-                console.log(newPost.title)
-                console.log(newPost.link)
                 Post.create({
                     title: newPost.title,
                     link: newPost.link
@@ -22,21 +20,17 @@ router.get("/api/scrape", function (req, res) {
                         console.log(err)
                     }
                     if (i === response.data.data.children.length - 1) {
-
-                        console.log("MADE IT HERE")
-                        console.log(docs.length, "docs")
-                        console.log(numDocs, "numDocs")
                         if (numDocs > 0) {
                             Post.find({}).then((documents) => {
-                                console.log(documents.length, "documents")
                                 if (documents.length !== numDocs) {
                                     let numNew = documents.length - numDocs;
                                     let textMessage = "";
-                                    for (let i = 0; i < 3; i++) {
-                                        textMessage += "\n\n " + parseInt(i + 1) + ". Title: " + documents[i].title + "\n Link: " + documents[i].link
+                                    for (let i = documents.length - numNew + 1, j = 1; i < documents.length + 1; i++, j++) {
+
+                                        textMessage += "\n\n " + parseInt(j + 1) + ". Title: " + documents[i].title + "\n Link: " + documents[i].link
                                     }
                                     if (numNew > 3) {
-                                        textMessage += "\n ...and " + numNew - 3 + " more."
+                                        textMessage += "\n\n ...and " + numNew - 3 + " more."
                                     }
                                     client.messages.create({
                                         body: textMessage,
@@ -65,28 +59,12 @@ router.get("/api/scrape", function (req, res) {
 })
 
 router.get("/api/posts", function (req, res) {
-    // find all products where quantity is greater than zero
+
     Post.find({})
         .then((docs) => {
             res.json(docs);
         });
+
 });
-
-
-// router.post("/api/sendText", function (req, res) {
-//     console.log(req.body)
-//     var number =  req.body.phone.replace(/\D/g,'');
-//     console.log(number);
-//       client.messages
-//         .create({
-//           body: req.body.msg,
-//           from: '+16266584299',
-//           to: number
-//         })
-//         .then(function (response) {
-
-//         })
-//         .done();
-//     });
 
 module.exports = router;
