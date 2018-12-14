@@ -25,7 +25,11 @@ router.get("/api/scrape", function (req, res) {
                                 if (documents.length !== numDocs) {
                                     let numNew = documents.length - numDocs;
                                     let textMessage = "";
+<<<<<<< HEAD
                                     for (let i = documents.length - numNew + 1, j = 1; i < documents.length + 1; i++, j++) {
+=======
+                                    for (let i = documents.length - numNew, j = 1; i < (documents.length - numNew + 3); i++, j++) {
+>>>>>>> 7484377c01128f65f2e1d940ecc1732a8cf84511
 
                                         textMessage += "\n\n " + parseInt(j + 1) + ". Title: " + documents[i].title + "\n Link: " + documents[i].link
                                     }
